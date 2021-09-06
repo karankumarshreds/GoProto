@@ -7,6 +7,10 @@
 package __
 
 import (
+	context "context"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -230,4 +234,84 @@ func file_transaction_proto_init() {
 	file_transaction_proto_rawDesc = nil
 	file_transaction_proto_goTypes = nil
 	file_transaction_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// MoneyTransactionClient is the client API for MoneyTransaction service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type MoneyTransactionClient interface {
+	MakeTransaction(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+}
+
+type moneyTransactionClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewMoneyTransactionClient(cc grpc.ClientConnInterface) MoneyTransactionClient {
+	return &moneyTransactionClient{cc}
+}
+
+func (c *moneyTransactionClient) MakeTransaction(ctx context.Context, in *TransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
+	out := new(TransactionResponse)
+	err := c.cc.Invoke(ctx, "/protofiles.MoneyTransaction/MakeTransaction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// MoneyTransactionServer is the server API for MoneyTransaction service.
+type MoneyTransactionServer interface {
+	MakeTransaction(context.Context, *TransactionRequest) (*TransactionResponse, error)
+}
+
+// UnimplementedMoneyTransactionServer can be embedded to have forward compatible implementations.
+type UnimplementedMoneyTransactionServer struct {
+}
+
+func (*UnimplementedMoneyTransactionServer) MakeTransaction(context.Context, *TransactionRequest) (*TransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MakeTransaction not implemented")
+}
+
+func RegisterMoneyTransactionServer(s *grpc.Server, srv MoneyTransactionServer) {
+	s.RegisterService(&_MoneyTransaction_serviceDesc, srv)
+}
+
+func _MoneyTransaction_MakeTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoneyTransactionServer).MakeTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protofiles.MoneyTransaction/MakeTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoneyTransactionServer).MakeTransaction(ctx, req.(*TransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _MoneyTransaction_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "protofiles.MoneyTransaction",
+	HandlerType: (*MoneyTransactionServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "MakeTransaction",
+			Handler:    _MoneyTransaction_MakeTransaction_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "transaction.proto",
 }
