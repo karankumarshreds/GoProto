@@ -1,3 +1,5 @@
+# Protocol Buffers and gRPC in Go
+
 We will cover:
 
 - Protocol Buffers
