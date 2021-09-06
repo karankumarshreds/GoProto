@@ -4,7 +4,6 @@ We will cover:
 - Protocol Buffer Language
 - Compiling a protocol buffer with `protoc`
 - GRPC
-- Bidirectional streaming w/ gRPC
 
 ---
 
